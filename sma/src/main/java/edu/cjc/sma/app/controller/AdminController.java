@@ -23,11 +23,12 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/login")
-	public String loginStudent(@RequestParam("username") String username,@RequestParam("password") String password,Model m) {
+	public String loginStudent(@RequestParam("username") String username,
+			@RequestParam("password") String password,Model m) {
 		
 		 if(username.equals("Admin") && password.equals("Admin"))
 		 {
-			 List<Student> list=ssi.getAllStudents();
+			 List<Student> list=ssi.paging(0,2);
 			 m.addAttribute("data", list);
 			 return "adminscreen";
 		 }else {
@@ -62,8 +63,49 @@ public class AdminController {
 	public String searchByBatchStudents(@RequestParam("batchNumber") String batchNumber,Model m) {
 		
 		List<Student> list=ssi.getStudentsByBatch(batchNumber);
+		 if(list.size()>0) {
+			 m.addAttribute("data", list);
+		 }else {
+			 List<Student> list1=ssi.getAllStudents();
+			 m.addAttribute("data", list1);
+			 m.addAttribute("message","No record found for this batch "+batchNumber);
+		 }
+	
+		return "adminscreen";
+	}
+	
+	@RequestMapping("/paging")
+	public String paging(@RequestParam("pageNo") int pageNo,Model m) {
+		int size=2;
+		     List<Student> list   = ssi.paging(pageNo,size);
+	
+		     
+		     m.addAttribute("data", list);
+		
+		return "adminscreen";
+		
+	}
+	
+	
+	@RequestMapping("/fees")
+	public String onFees(@RequestParam("id") int studentId,Model m) {
+		
+ Student st=ssi.getSingleStudent(studentId);
+		m.addAttribute("st", st);
+		return "fees";
+	}
+	
+	@RequestMapping("/payfees")
+	public String payFees(@RequestParam("studentid") int studentId,@RequestParam("ammount") double ammount,Model m) {
+		
+		ssi.updateStudentFees(studentId,ammount);
+		
+		List<Student> list=ssi.getAllStudents();
 		m.addAttribute("data", list);
 		return "adminscreen";
 	}
+	
+	
+	
 	
 }

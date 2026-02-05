@@ -3,6 +3,8 @@ package edu.cjc.sma.app.serviceimpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.data.autoconfigure.web.DataWebProperties.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import edu.cjc.sma.app.model.Student;
@@ -19,7 +21,6 @@ public class StudentServiceImpl implements StudentServiceI
 	@Override
 	public void saveData(Student s) {
 		sr.save(s);
-		
 	}
 
 	@Override
@@ -38,6 +39,26 @@ public class StudentServiceImpl implements StudentServiceI
 	public List<Student> getStudentsByBatch(String batchNumber) {
 		
 		return sr.findAllByBatchNumber(batchNumber);
+	}
+
+	@Override
+	public List<Student> paging(int pageNo, int size) {
+		              List<Student> l=sr.findAll(PageRequest.of(pageNo, size)).getContent();
+		return l;
+	}
+
+	@Override
+	public Student getSingleStudent(int studentId) {
+		// TODO Auto-generated method stub
+		return sr.findById(studentId).get();
+	}
+
+	@Override
+	public void updateStudentFees(int studentId, double ammount) {
+		
+		       Student s    =  sr.findById(studentId).get();
+		             s.setFeesPaid(s.getFeesPaid()+ammount);
+		             sr.save(s);
 	}
 
 }

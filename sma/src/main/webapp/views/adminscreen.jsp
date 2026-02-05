@@ -234,7 +234,7 @@ name="batchNumber">
 
 								<div class="btn-group btn-group-sm" role="group"
 									aria-label="...">
-									<button class="btn btn-outline-success">Pay Fees</button>
+									<a class="btn btn-outline-success" href="fees?id=${s.studentId}">Pay Fees</a>
 									<button class="btn btn-outline-primary">Shift Batch</button>
 									<a href="delete?id=${s.studentId}" class="btn btn-outline-danger">Remove</a>
 
@@ -248,7 +248,15 @@ name="batchNumber">
 				</tbody>
 
 			</table>
-
+           <nav aria-label="...">
+  <ul class="pagination pagination-lg">
+    <li class="page-item active" >
+      <a class="page-link" aria-current="page" href="paging?pageNo=0">1</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="paging?pageNo=1">2</a></li>
+    <li class="page-item"><a class="page-link" href="paging?pageNo=2">3</a></li>
+  </ul>
+</nav>
 		</section>
 </body>
 </html>
